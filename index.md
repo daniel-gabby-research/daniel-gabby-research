@@ -1,10 +1,9 @@
- // Start of Selection
 ---
 title: Home
 layout: home
 nav_order: 1
 ---
-**Welcome to Daniel & Gabby's Notebook!** This website is an open resource for anyone interested in exploring and discussing Genomic Language Models and their applications in understanding the language of life.
+**Welcome to Daniel & Gabby's Notebook!** This website is an open resource for anyone interested in exploring and discussing AI for Science.
 
 Here at Daniel & Gabby's Notebook, you will find a curated selection of papers from top conferences and journals in the field, including [ISMB](https://www.iscb.org/ismb2023), [RECOMB](https://www.recomb2023.org/), [NeurIPS](https://nips.cc/), [ICLR](https://iclr.cc/), [ICML](https://icml.cc/), [AAAI](https://aaai.org/), [KDD](https://www.kdd.org/), [Nature Methods](https://www.nature.com/nmeth/), [Genome Research](https://genome.cshlp.org/), [Bioinformatics](https://academic.oup.com/bioinformatics), [PNAS](https://www.pnas.org/), and [PLOS Computational Biology](https://journals.plos.org/ploscompbiol/).
 
