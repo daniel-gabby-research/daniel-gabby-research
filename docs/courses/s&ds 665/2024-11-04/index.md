@@ -80,57 +80,51 @@ $$\theta \leftarrow \theta + \eta (y_t - Q(s,a;\theta)) \nabla_\theta Q(s,a;\the
 
 - Policy evaluation:
 
-> Algorithm:
-> Loop:
->   $\Delta \leftarrow 0$
->   Loop for each state $s$:
->     $v \leftarrow V(s)$
->     $V(s) \leftarrow \sum_{s',r} p(s', r \mid s, \pi(s))(r + \gamma V(s'))$
->     $\Delta \leftarrow \max\{\Delta, \lvert v - V(s) \rvert\}$
->   Until $\Delta < \epsilon$
-
+![policy_evaluation](image-1.png)
 
 - Policy improvement:
 
-> Algorithm:
-> stable $\leftarrow$ $\texttt{True}$
-> For each state $s$:
->   $a_{old} \leftarrow \pi(s)$
->   $\pi(s) \leftarrow$ \operatorname{argmax}_a \sum_{s',r} p(s', r \mid s, \pi(s))(r + \gamma V(s'))$
->   If $a_{old} \neq \pi(s)$ then stable $\leftarrow$ $\texttt{False}$
-> if stable = $\texttt{False}$ return to policy evaluation
+![policy_improvement](image.png)
 
 ## 6. Policy Gradient Methods
 
 - Parameterize the policy: $\pi_\theta(s)$ 
+
     Policy is probability distribution $\pi_\theta(a \vert s)$ over action $a$ given state $s$
 
 - Loss function: Expected reward $\mathbb{J}(\theta) = \mathbb{E}[R]$
 
-    Let $\tau$ be a trajectory sequence: 
+    Let $\tau$ be a trajectory sequence:
+
     $(s_0,a_0) \rightarrow (s_1,r_1,a_1) \rightarrow (s_2,r_2,a_2) \rightarrow \cdots \rightarrow (s_T,r_T,a_T) \rightarrow s_{T+1}$, where $s_{T+1}$ is a terminal state.
 
     The objective function $\mathcal{J}(\theta)$ is defined as:
+
     $$\mathcal{J}(\theta) = \mathbb{E}_\theta[R(\tau)] = \mathbb{E}_\theta\left[\sum_{t=1}^T r_t\right]$$
 
 
 - Calculating the gradient:
+
     Using Markov property, calculate $E_\theta(R(\tau))$ as
 
     $$E_\theta(R(\tau)) = \int p(\tau \mid \theta) R(\tau) d\tau$$
+
     $$p(\tau \mid \theta) = \prod_{t=0}^T \pi_\theta(a_t \mid s_t) p(s_{t+1}, r_{t+1} \mid s_t, a_t)$$
 
     It follows that
-    $$\nabla_\theta \log p(\tau \mid \theta) = \sum_{t=0}^T \nabla_\theta \log \pi_\theta(a_t \mid s_t) = \sum_{t=0}^T \nabla_\theta \pi_\theta(a_t \mid s_t) \frac{\pi_\theta(a_t \mid s_t)}{p_\theta(a_t \mid s_t)}$$
+
+    $$\nabla_\theta \log p(\tau \mid \theta) = \sum_{t=0}^T \nabla_\theta \log \pi_\theta(a_t \mid s_t) = \sum_{t=0}^T \nabla_\theta \pi_\theta(a_t \mid s_t) \dfrac{\pi_\theta(a_t \mid s_t)}{p_\theta(a_t \mid s_t)}$$
 
     Now we use
+
     $$\nabla_\theta J(\theta) = \nabla_\theta E_\theta R(\tau) = \nabla_\theta \int R(\tau) p(\tau \mid \theta) d\tau = \int R(\tau) \nabla_\theta p(\tau \mid \theta) d\tau$$
-    $$= \int R(\tau) \frac{\nabla_\theta p(\tau \mid \theta)}{p(\tau \mid \theta)} p(\tau \mid \theta) d\tau = E_\theta \left[ R(\tau) \nabla_\theta \log p(\tau \mid \theta) \right]$$
+
+    $$= \int R(\tau) \dfrac{\nabla_\theta p(\tau \mid \theta)}{p(\tau \mid \theta)} p(\tau \mid \theta) d\tau = E_\theta \left[ R(\tau) \nabla_\theta \log p(\tau \mid \theta) \right]$$
 
 - Approximating the gradient:
 
     Since it’s an expectation, can approximate by sampling:
+
     $$\nabla_\theta J(\theta) \approx \frac{1}{N} \sum_{i=1}^N R(\tau^{(i)}) \nabla_\theta \log p(\tau^{(i)} \mid \theta)$$
+
     $$= \frac{1}{N} \sum_{i=1}^N R(\tau^{(i)}) \sum_{t=0}^T \nabla_\theta \log \pi_\theta(a^{(i)}_t \mid s^{(i)}_t)$$
-
-
