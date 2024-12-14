@@ -21,11 +21,11 @@ reward.
 
 ## 2. Principle: Bellman Equation
 
-- Value function optimality:
+- **Value function optimality**:
 
 $$v_*(s) = \max_a \mathbb{E}[R_{t+1} + \gamma v_*(S_{t+1}) \mid S_t = s, A_t = a]$$
 
-- Q-function optimality:
+- **Q-function optimality**:
 
 $$Q_*(s,a) = \mathbb{E}[R_{t+1} + \gamma \max_{a'} Q_*(S_{t+1}, a') \mid S_t = s, A_t = a]$$
 
@@ -33,9 +33,9 @@ $$Q_*(s,a) = \mathbb{E}[R_{t+1} + \gamma \max_{a'} Q_*(S_{t+1}, a') \mid S_t = s
 
 ## 3. Deep Q-Learning
 
-- Strategy:
+- **Strategy**:
 
-    - Objective:
+    - **Objective**:
 
     $$Q(s, a; \theta) = \mathbb{E}[R_{t+1} + \gamma \max_{a'} Q(S_{t+1}, a'; \theta) \mid S_t = s, A_t = a]$$
 
@@ -51,14 +51,14 @@ $$Q_*(s,a) = \mathbb{E}[R_{t+1} + \gamma \max_{a'} Q_*(S_{t+1}, a') \mid S_t = s
 
     $$\theta \leftarrow \theta + \eta (y_t - Q(s,a;\theta)) \nabla_\theta Q(s,a;\theta)$$
 
-- Replay buffer:
+- **Replay buffer**:
     - Prevent “forgetting” how to play early parts of a game
     - Remove correlations between nearby state transitions
     - Prevent cycling behavior, due to target changing
 
 > Learning takes place when expectations are violated. The receipt of the reward itself does not cause changes.
 
-- Automatic differentiation: Gradient Collection
+- *Automatic differentiation*: Gradient Collection
 
 ## 4. Multi-Armed Bandits
 
@@ -71,21 +71,21 @@ $$Q_*(s,a) = \mathbb{E}[R_{t+1} + \gamma \max_{a'} Q_*(S_{t+1}, a') \mid S_t = s
 
 ## 5. Policy Iteration
 
-- Policy evaluation:
+- **Policy evaluation**:
 
 ![policy_evaluation](image-1.png)
 
-- Policy improvement:
+- **Policy improvement**:
 
 ![policy_improvement](image.png)
 
 ## 6. Policy Gradient Methods
 
-- Parameterize the policy: $\pi_\theta(s)$ 
+- **Parameterize the policy**: $\pi_\theta(s)$ 
 
     Policy is probability distribution $\pi_\theta(a \vert s)$ over action $a$ given state $s$
 
-- Loss function: Expected reward $\mathbb{J}(\theta) = \mathbb{E}[R]$
+- **Loss function**: Expected reward $\mathbb{J}(\theta) = \mathbb{E}[R]$
 
     Let $\tau$ be a trajectory sequence:
 
@@ -96,7 +96,7 @@ $$Q_*(s,a) = \mathbb{E}[R_{t+1} + \gamma \max_{a'} Q_*(S_{t+1}, a') \mid S_t = s
     $$\mathcal{J}(\theta) = \mathbb{E}_\theta[R(\tau)] = \mathbb{E}_\theta\left[\sum_{t=1}^T r_t\right]$$
 
 
-- Calculating the gradient:
+- **Calculating the gradient**:
 
     Using Markov property, calculate $E_\theta(R(\tau))$ as
 
@@ -114,7 +114,7 @@ $$Q_*(s,a) = \mathbb{E}[R_{t+1} + \gamma \max_{a'} Q_*(S_{t+1}, a') \mid S_t = s
 
     $$= \int R(\tau) \dfrac{\nabla_\theta p(\tau \mid \theta)}{p(\tau \mid \theta)} p(\tau \mid \theta) d\tau = E_\theta \left[ R(\tau) \nabla_\theta \log p(\tau \mid \theta) \right]$$
 
-- Approximating the gradient:
+- **Approximating the gradient**:
 
     Since it’s an expectation, can approximate by sampling:
 
