@@ -1,4 +1,5 @@
----layout: default
+---
+layout: default
 parent: S&DS 665 Intermediate Machine Learning
 grand_parent: Courses at Yale
 title: "Classical Sequence Models and Recurrent Neural Networks"
