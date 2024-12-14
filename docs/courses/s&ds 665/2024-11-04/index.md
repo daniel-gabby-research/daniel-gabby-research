@@ -35,20 +35,23 @@ $$Q_*(s,a) = \mathbb{E}[R_{t+1} + \gamma \max_{a'} Q_*(S_{t+1}, a') \mid S_t = s
 
 - Deep Q-Learning
 
-**Strategy**:
+- Strategy:
 
-Objective:
-$$Q(s, a; \theta) = \mathbb{E}[R_{t+1} + \gamma \max_{a'} Q(S_{t+1}, a'; \theta) \mid S_t = s, A_t = a]$$
+    - Objective:
 
-Let $y_t$ be one step of "play":
-$$y_t = R_{t+1} + \gamma \max_{a'} Q(S_{t+1}, a'; \theta_{old})$$
+    $$Q(s, a; \theta) = \mathbb{E}[R_{t+1} + \gamma \max_{a'} Q(S_{t+1}, a'; \theta) \mid S_t = s, A_t = a]$$
 
-Adjust the parameters $\theta$ to make the squared error small (SGD):
-$$(y_t - Q(s, a; \theta))^2$$
+    - Let $y_t$ be one step of "play":
 
-Conduct SGD using backpropagation:
+    $$y_t = R_{t+1} + \gamma \max_{a'} Q(S_{t+1}, a'; \theta_{old})$$
 
-$$\theta \leftarrow \theta + \eta (y_t - Q(s,a;\theta)) \nabla_\theta Q(s,a;\theta)$$
+    - Adjust the parameters $\theta$ to make the squared error small (SGD):
+
+    $$(y_t - Q(s, a; \theta))^2$$
+
+    - Conduct SGD using backpropagation:
+
+    $$\theta \leftarrow \theta + \eta (y_t - Q(s,a;\theta)) \nabla_\theta Q(s,a;\theta)$$
 
 - Replay buffer:
     - Prevent “forgetting” how to play early parts of a game
