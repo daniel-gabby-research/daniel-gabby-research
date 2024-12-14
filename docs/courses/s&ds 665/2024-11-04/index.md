@@ -31,9 +31,7 @@ $$Q_*(s,a) = \mathbb{E}[R_{t+1} + \gamma \max_{a'} Q_*(S_{t+1}, a') \mid S_t = s
 
 ![q-learning](image-8.png)
 
-## 3. Deep Reinforcement Learning
-
-- Deep Q-Learning
+## 3. Deep Q-Learning
 
 - Strategy:
 
@@ -108,7 +106,7 @@ $$Q_*(s,a) = \mathbb{E}[R_{t+1} + \gamma \max_{a'} Q_*(S_{t+1}, a') \mid S_t = s
 
     It follows that
 
-    $$\nabla_\theta \log p(\tau \mid \theta) = \sum_{t=0}^T \nabla_\theta \log \pi_\theta(a_t \mid s_t) = \sum_{t=0}^T \nabla_\theta \pi_\theta(a_t \mid s_t) \dfrac{\pi_\theta(a_t \mid s_t)}{p_\theta(a_t \mid s_t)}$$
+    $$\nabla_\theta \log p(\tau \mid \theta) = \sum_{t=0}^T \nabla_\theta \log \pi_\theta(a_t \mid s_t) = \sum_{t=0}^T \dfrac{\nabla_\theta \pi_\theta(a_t \mid s_t)}{\pi_\theta(a_t \mid s_t)}$$
 
     Now we use
 
@@ -120,6 +118,14 @@ $$Q_*(s,a) = \mathbb{E}[R_{t+1} + \gamma \max_{a'} Q_*(S_{t+1}, a') \mid S_t = s
 
     Since it’s an expectation, can approximate by sampling:
 
-    $$\nabla_\theta J(\theta) \approx \frac{1}{N} \sum_{i=1}^N R(\tau^{(i)}) \nabla_\theta \log p(\tau^{(i)} \mid \theta)$$
+    $$
+    \begin{aligned}
+    \nabla_\theta J(\theta) &\approx \frac{1}{N} \sum_{i=1}^N R(\tau^{(i)}) \nabla_\theta \log p(\tau^{(i)} \mid \theta) \\
+    &= \frac{1}{N} \sum_{i=1}^N R(\tau^{(i)}) \sum_{t=0}^T \nabla_\theta \log \pi_\theta(a^{(i)}_t \mid s^{(i)}_t) \\
+    &\equiv \widehat{\nabla_\theta J(\theta)}
+    \end{aligned}
+    $$
 
-    $$= \frac{1}{N} \sum_{i=1}^N R(\tau^{(i)}) \sum_{t=0}^T \nabla_\theta \log \pi_\theta(a^{(i)}_t \mid s^{(i)}_t)$$
+    The policy gradient algorithm is then
+
+    $$\theta \leftarrow \theta + \eta \widehat{\nabla_\theta J(\theta)}$$
