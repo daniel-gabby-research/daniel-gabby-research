@@ -130,16 +130,16 @@ This gives us a direct solution for computing the value function, *assuming the 
 
 2. The value function can be computed iteratively using the Bellman equation:
 
-$$V_k(s) = R(s) + \gamma \sum_{s' \in S} P(s'|s)V_{k-1}(s')$$
+$$V_k(s) = R(s) + \gamma \sum_{s' \in S} P(s'\mid s)V_{k-1}(s')$$
 
 where:
 - $V_k(s)$ is the value function at iteration $k$
 - $V_{k-1}(s')$ is the value function from the previous iteration
-- The iteration continues until convergence, i.e., $|V_k(s) - V_{k-1}(s)| < \epsilon$ for some small $\epsilon$
+- The iteration continues until convergence, i.e., $\lvert V_k(s) - V_{k-1}(s) \rvert < \epsilon$ for some small $\epsilon$
 
 
 
-### Markov Decision Process(MDP) + Policy $\pi(a|s)$ = MRP
+### Markov Decision Process(MDP) + Policy $\pi(a\mid s)$ = MRP
 Given a MDP $(S,A,P,R,\gamma)$ and a policy $\pi$, the induced MRP is $(S,R^\pi,P^\pi,\gamma)$, where:
 
 $$R^\pi(s) = \sum_{a\in A} \pi(a\mid s)R(s,a)$$
