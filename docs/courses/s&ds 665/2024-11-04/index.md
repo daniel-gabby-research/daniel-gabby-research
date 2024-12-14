@@ -29,15 +29,7 @@ $$v_*(s) = \max_a \mathbb{E}[R_{t+1} + \gamma v_*(S_{t+1}) \mid S_t = s, A_t = a
 
 $$Q_*(s,a) = \mathbb{E}[R_{t+1} + \gamma \max_{a'} Q_*(S_{t+1}, a') \mid S_t = s, A_t = a]$$
 
-> Algorithm:
-> 1. Initialize $Q(s,a)$ for all $s\in S$ and $a\in A(s)$
-> 2. For each episode:
->    - Initialize $s$
->    - Choose $a$ using policy derived from $Q$ (e.g., $\epsilon$-greedy)
->    - Take action $a$, observe $r, s'$
->    - Update $Q(s,a) \leftarrow Q(s,a) + \alpha [r + \gamma \max_{a'} Q(s', a') - Q(s,a)]$
->    - $s \leftarrow s'$
-> 3. Until $s$ is terminal
+![q-learning](image-8.png)
 
 ## 3. Deep Reinforcement Learning
 
