@@ -23,11 +23,11 @@ reward.
 
 - Value function optimality:
 
-$$v_*(s) = \max_a \mathbb{E}[R_{t+1} + \gamma v_*(S_{t+1}) | S_t = s, A_t = a]$$
+$$v_*(s) = \max_a \mathbb{E}[R_{t+1} + \gamma v_*(S_{t+1}) \mid S_t = s, A_t = a]$$
 
 - Q-function optimality:
 
-$$Q_*(s,a) = \mathbb{E}[R_{t+1} + \gamma \max_{a'} Q_*(S_{t+1}, a') | S_t = s, A_t = a]$$
+$$Q_*(s,a) = \mathbb{E}[R_{t+1} + \gamma \max_{a'} Q_*(S_{t+1}, a') \mid S_t = s, A_t = a]$$
 
 > Algorithm:
 > 1. Initialize $Q(s,a)$ for all $s\in S$ and $a\in A(s)$
@@ -46,7 +46,7 @@ $$Q_*(s,a) = \mathbb{E}[R_{t+1} + \gamma \max_{a'} Q_*(S_{t+1}, a') | S_t = s, A
 **Strategy**:
 
 Objective:
-$$Q(s, a; \theta) = \mathbb{E}[R_{t+1} + \gamma \max_{a'} Q(S_{t+1}, a'; \theta) | S_t = s, A_t = a]$$
+$$Q(s, a; \theta) = \mathbb{E}[R_{t+1} + \gamma \max_{a'} Q(S_{t+1}, a'; \theta) \mid S_t = s, A_t = a]$$
 
 Let $y_t$ be one step of "play":
 $$y_t = R_{t+1} + \gamma \max_{a'} Q(S_{t+1}, a'; \theta_{old})$$
@@ -85,8 +85,8 @@ $$\theta \leftarrow \theta + \eta (y_t - Q(s,a;\theta)) \nabla_\theta Q(s,a;\the
 >   $\Delta \leftarrow 0$
 >   Loop for each state $s$:
 >     $v \leftarrow V(s)$
->     $V(s) \leftarrow \sum_{s',r} p(s', r | s, \pi(s))(r + \gamma V(s'))$
->     $\Delta \leftarrow \max\{\Delta, |v − V(s)|\}$
+>     $V(s) \leftarrow \sum_{s',r} p(s', r \mid s, \pi(s))(r + \gamma V(s'))$
+>     $\Delta \leftarrow \max\{\Delta, \lvert v - V(s) \rvert\}$
 >   Until $\Delta < \epsilon$
 
 
@@ -96,7 +96,7 @@ $$\theta \leftarrow \theta + \eta (y_t - Q(s,a;\theta)) \nabla_\theta Q(s,a;\the
 > stable $\leftarrow$ $\texttt{True}$
 > For each state $s$:
 >   $a_{old} \leftarrow \pi(s)$
->   $\pi(s) \leftarrow$ \operatorname{argmax}_a \sum_{s',r} p(s', r | s, \pi(s))(r + \gamma V(s'))$
+>   $\pi(s) \leftarrow$ \operatorname{argmax}_a \sum_{s',r} p(s', r \mid s, \pi(s))(r + \gamma V(s'))$
 >   If $a_{old} \neq \pi(s)$ then stable $\leftarrow$ $\texttt{False}$
 > if stable = $\texttt{False}$ return to policy evaluation
 
@@ -117,20 +117,20 @@ $$\theta \leftarrow \theta + \eta (y_t - Q(s,a;\theta)) \nabla_\theta Q(s,a;\the
 - Calculating the gradient:
     Using Markov property, calculate $E_\theta(R(\tau))$ as
 
-    $$E_\theta(R(\tau)) = \int p(\tau | \theta) R(\tau) d\tau$$
-    $$p(\tau | \theta) = \prod_{t=0}^T \pi_\theta(a_t | s_t) p(s_{t+1}, r_{t+1} | s_t, a_t)$$
+    $$E_\theta(R(\tau)) = \int p(\tau \mid \theta) R(\tau) d\tau$$
+    $$p(\tau \mid \theta) = \prod_{t=0}^T \pi_\theta(a_t \mid s_t) p(s_{t+1}, r_{t+1} \mid s_t, a_t)$$
 
     It follows that
-    $$\nabla_\theta \log p(\tau | \theta) = \sum_{t=0}^T \nabla_\theta \log \pi_\theta(a_t | s_t) = \sum_{t=0}^T \nabla_\theta \pi_\theta(a_t | s_t) \frac{\pi_\theta(a_t | s_t)}{p_\theta(a_t | s_t)}$$
+    $$\nabla_\theta \log p(\tau \mid \theta) = \sum_{t=0}^T \nabla_\theta \log \pi_\theta(a_t \mid s_t) = \sum_{t=0}^T \nabla_\theta \pi_\theta(a_t \mid s_t) \frac{\pi_\theta(a_t \mid s_t)}{p_\theta(a_t \mid s_t)}$$
 
     Now we use
-    $$\nabla_\theta J(\theta) = \nabla_\theta E_\theta R(\tau) = \nabla_\theta \int R(\tau) p(\tau | \theta) d\tau = \int R(\tau) \nabla_\theta p(\tau | \theta) d\tau$$
-    $$= \int R(\tau) \frac{\nabla_\theta p(\tau | \theta)}{p(\tau | \theta)} p(\tau | \theta) d\tau = E_\theta \left[ R(\tau) \nabla_\theta \log p(\tau | \theta) \right]$$
+    $$\nabla_\theta J(\theta) = \nabla_\theta E_\theta R(\tau) = \nabla_\theta \int R(\tau) p(\tau \mid \theta) d\tau = \int R(\tau) \nabla_\theta p(\tau \mid \theta) d\tau$$
+    $$= \int R(\tau) \frac{\nabla_\theta p(\tau \mid \theta)}{p(\tau \mid \theta)} p(\tau \mid \theta) d\tau = E_\theta \left[ R(\tau) \nabla_\theta \log p(\tau \mid \theta) \right]$$
 
 - Approximating the gradient:
 
     Since it’s an expectation, can approximate by sampling:
-    $$\nabla_\theta J(\theta) \approx \frac{1}{N} \sum_{i=1}^N R(\tau^{(i)}) \nabla_\theta \log p(\tau^{(i)} | \theta)$$
-    $$= \frac{1}{N} \sum_{i=1}^N R(\tau^{(i)}) \sum_{t=0}^T \nabla_\theta \log \pi_\theta(a^{(i)}_t | s^{(i)}_t)$$
+    $$\nabla_\theta J(\theta) \approx \frac{1}{N} \sum_{i=1}^N R(\tau^{(i)}) \nabla_\theta \log p(\tau^{(i)} \mid \theta)$$
+    $$= \frac{1}{N} \sum_{i=1}^N R(\tau^{(i)}) \sum_{t=0}^T \nabla_\theta \log \pi_\theta(a^{(i)}_t \mid s^{(i)}_t)$$
 
 
