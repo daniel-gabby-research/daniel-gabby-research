@@ -94,6 +94,27 @@ where $\pi(\cdot)$ is the soft-max function.
 
 In this illustration, $x_t$ is the “1-hot” representation of a character, $W_{xh} \in \mathbb{R}^{3 \times 4}$, $W_{hh} \in \mathbb{R}^{3 \times 3}$ and $W_{hy} \in \mathbb{R}^{4 \times 3}$.
 
+**Loss function:**
+
+The model is trained to assign high probability to the word (or
+character) that appears next:
+
+$$
+\text{Loss} = -\frac{1}{T} \sum_{t=1}^T \log p(x_t | h_t)
+$$
+
+If the last layer assigns a score to word $v$ as
+
+$$
+f(v, h_t) = \beta^T_v h_t
+$$
+
+then this is given by
+
+$$
+\text{Loss} = -\frac{1}{T} \sum_{t=1}^T \log p(x_t | h_t)
+$$
+
 ## 3.2 Memory circuits
 
 A simpler alternative to the LSTM circuit is called the *Gated Recurrent Unit (GRU)*.
